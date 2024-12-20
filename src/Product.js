@@ -1,10 +1,20 @@
 import React from "react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "./App";
 import "./Product.css";
 export default function Product() {
   const { name, setName, user, setUser, cart, setCart, products, setProducts } =
     useContext(AppContext);
+  const [qty, setQty] = useState();
+
+  const handleQty = (e) => {
+    setQty(e)
+  };
+
+  const addToCart = (id,qty) => {
+    setCart({ ...cart, [id]: qty });
+    console.log(cart);
+  };
   useEffect(() => {
     setProducts([
       {
@@ -36,12 +46,19 @@ export default function Product() {
       {/* {name}<button onClick={()=>setName("Madhu")}>Submit</button> */}
       {products.map((value, index) => (
         <div className="App-Product-Box">
-          <img src={value.url}/>
+          <img src={value.url} />
           <h3>{value.name}</h3>
           <h4>{value.desc}</h4>
           <h3>{value.price}</h3>
-          <button>Add to Cart</button>
-          </div>
+          <select onChange={(e) => handleQty(Number(e.target.value))}>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          <button onClick={() => addToCart(value.id,qty)}>Add to Cart</button>
+        </div>
       ))}
     </div>
   );
